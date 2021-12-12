@@ -35,6 +35,22 @@ export default {
             },
           ],
         },
+        {
+          label: 'In Progress',
+          tasks: [
+            {
+              content: 'what',
+            },
+          ],
+        },
+        {
+          label: 'Done',
+          tasks: [
+            {
+              content: 'what',
+            },
+          ],
+        },
       ],
     }
   },

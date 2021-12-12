@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "vuedraggable": "^2.24.3",
-        "vuex": "^3.6.2"
+        "vuex": "^3.6.2",
+        "webpack": "^5.65.0"
     }
 }
