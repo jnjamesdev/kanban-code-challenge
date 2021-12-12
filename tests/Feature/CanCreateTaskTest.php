@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class CamCreateTaskTest extends TestCase
+class CanCreateTaskTest extends TestCase
 {
     use RefreshDatabase;
     /**
@@ -13,12 +13,11 @@ class CamCreateTaskTest extends TestCase
      *
      * @return void
      */
-    public function testCanCreateTask()
+    public function testCanCreateTaskTest()
     {
-        $response = $this->get('/tasks/store');
-
+        $response = $this->post('/store', ['status' => 'done', 'description' => 'test desc']);
         $this->assertDatabaseHas('tasks', [
-            'description' => 'sally@example.com',
+            'description' => 'test desc',
             'status' => 'done'
         ]);
     }

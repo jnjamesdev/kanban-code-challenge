@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Request;
-use App\UseCases\StoreUserUseCase;
+use Illuminate\Http\Request;
+use App\UseCases\StoreTaskUseCase;
 use App\Factories\StoreTaskFactory;
 
 class TasksController extends Controller
@@ -26,10 +26,12 @@ class TasksController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request) // add response type here
     {
-        $dto = $this->storeTaskFactory($request);
+        logger('-----------test---------------');
+        $dto = $this->storeTaskFactory->fromRequest($request);
+        logger('----------- 22222 ---------------');
 
-        $this->storeTaskUseCase($dto);
+        $this->storeTaskUseCase->handle($dto);
     }
 }

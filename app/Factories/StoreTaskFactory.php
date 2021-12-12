@@ -1,6 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Request;
+namespace App\Factories;
+
+use Illuminate\Http\Request;
 use App\DTO\TaskDto;
 
 class StoreTaskFactory
@@ -15,7 +17,7 @@ class StoreTaskFactory
     {
         $dto = new TaskDto();
         $dto->setDescription($request->description);
-        $dto->setStatus($request->description);
+        $dto->setStatus($request->status);
         return $dto;
     }
 }

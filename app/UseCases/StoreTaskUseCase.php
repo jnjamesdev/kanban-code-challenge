@@ -3,10 +3,10 @@
 namespace App\UseCases;
 
 use App\DTO\TaskDto;
-use App\Repositories\TaskRepositories;
+use App\Repositories\TaskRepository;
 
 
-class StoreUserUseCase
+class StoreTaskUseCase
 {
     private TaskRepository $taskRepo;
 
@@ -19,6 +19,7 @@ class StoreUserUseCase
 
     public function handle(TaskDTO $taskDto)
     {
-
+        logger('333333');
+        $this->taskRepo->store($taskDto);
     }
 }
