@@ -28,7 +28,9 @@ const actions = {
   updateTask({ commit }, data) {
     axios.put('/api/update/' + data.id, { status: data.status, description: data.description })
       .then(response => {
-        location.reload();
+        // todo - work on updating the local state of the card
+        // $vm0.items[1].tasks[0].status = 'done'
+        data.card.status = data.status
       })
   },
   deleteTask({ commit }, id) {

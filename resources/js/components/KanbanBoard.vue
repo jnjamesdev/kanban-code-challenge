@@ -67,7 +67,7 @@ export default {
             status = 'done'
             break
         }
-        this.$store.dispatch('updateTask', {status: status, id: taskId}, {root:true})
+        this.$store.dispatch('updateTask', {status: status, id: taskId, card: evnt.added.element}, {root:true})
       }
     },
     changeDescription(event, card) {
