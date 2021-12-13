@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use App\UseCases\StoreTaskUseCase;
 use App\UseCases\UpdateTaskUseCase;
 use App\UseCases\DeleteTaskUseCase;
+use App\UseCases\GetTasksUseCase;
 use App\Factories\StoreTaskFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTaskRequest;
@@ -19,6 +20,8 @@ class TasksController extends Controller
     private StoreTaskFactory $storeTaskFactory;
     private UpdateTaskUseCase $updateTaskUseCase;
     private DeleteTaskUseCase $deleteTaskUseCase;
+    private GetTasksUseCase $getTasksUseCase;
+
     /**
      * Constructor
      *
@@ -30,7 +33,7 @@ class TasksController extends Controller
         $this->storeTaskFactory = app(StoreTaskFactory::class);
         $this->updateTaskUseCase = app(UpdateTaskUseCase::class);
         $this->deleteTaskUseCase = app(DeleteTaskUseCase::class);
-
+        $this->getTasksUseCase = app(GetTasksUseCase::class);
     }
 
     /**
@@ -81,8 +84,22 @@ class TasksController extends Controller
             $this->deleteTaskUseCase->handle($dto);
             return response()->json(200);
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(500);
         }
+    }
+
+    /**
+     * Get tasks to display on front end
+     *
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        // try {
+            $tasks = $this->getTasksUseCase->handle();
+            return response()->json($tasks);
+        // } catch (\Exception $e) {
+        //     // return response()->json(500);
+        // }
     }
 }

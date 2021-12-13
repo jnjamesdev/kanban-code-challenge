@@ -9,10 +9,25 @@ class TasksTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Set up
+     *
+     * @return void
+     */
     public function setUp(): void
     {
         parent::setUp();
         $this->artisan('db:seed');
+    }
+
+    /**
+     * Tear down
+     *
+     * @return void
+     */
+    public function tearDown(): void
+    {
+        parent::tearDown();
     }
 
     /**
@@ -48,5 +63,16 @@ class TasksTest extends TestCase
         $data =  ['status' => 'done', 'description' => 'test desc'];
         $response = $this->post('api/store', $data);
         $this->assertDatabaseHas('tasks', $data);
+    }
+
+    /**
+     * Can we get all the tasks
+     *
+     * @return void
+     */
+    public function testCanGetTasksTest()
+    {
+        $response = $this->get('api/index');
+        $response->assertStatus(200);
     }
 }

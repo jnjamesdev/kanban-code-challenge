@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\DTO\TaskDto;
 use App\Models\Task;
+use Illuminate\Database\Eloquent\Collection;
 
 class TaskRepository
 {
@@ -56,5 +57,15 @@ class TaskRepository
     public function getById(int $id): Task
     {
         return Task::findOrFail($id);
+    }
+
+    /**
+     * Get all tasks
+     *
+     * @return Collection
+     */
+    public function getAllGroupedByStatus(): Collection
+    {
+        return Task::all();
     }
 }

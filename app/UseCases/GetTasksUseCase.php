@@ -4,14 +4,14 @@ namespace App\UseCases;
 
 use App\DTO\TaskDto;
 use App\Repositories\TaskRepository;
+use Illuminate\Database\Eloquent\Collection;
 
-
-class DeleteTaskUseCase
+class GetTasksUseCase
 {
     private TaskRepository $taskRepo;
 
     /**
-     * Constructor
+     * Construct
      *
      * @return void
      */
@@ -20,14 +20,15 @@ class DeleteTaskUseCase
         $this->taskRepo = app(TaskRepository::class);
     }
 
+
+
     /**
-     * Handle the use case
+     * Handle use case
      *
-     * @param TaskDTO $taskDto
-     * @return void
+     * @return Collection
      */
-    public function handle(TaskDTO $taskDto): void
+    public function handle(): Collection
     {
-        $this->taskRepo->delete($taskDto);
+        return $this->taskRepo->getAllGroupedByStatus();
     }
 }

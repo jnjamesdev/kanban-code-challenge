@@ -1,12 +1,15 @@
 <template>
-  <div v-if="items">
-    <draggable class="kanban-board" group="groups" v-model="items" @end="() => {}">
-      <kanban-column v-for="(group, groupId) in items" :key="'group_' + groupId" :label="group.label || 'Untitled'" @create="() => {}">
-        <draggable class="kanban-board__drop-area" group="{name: 'tasks_' + groupId, put: true}" v-model="items[groupId].tasks" @end="() => {}">
-          <kanban-item v-for="(card, cardId) in group.tasks" :key="'card_' + cardId" v-model="card.content" @change="() => {}" @delete="() => {}" />
-        </draggable>
-      </kanban-column>
-    </draggable>
+  <div>
+    <div v-if="items">
+      <draggable class="kanban-board" group="groups" v-model="items" @end="() => {}">
+        <kanban-column v-for="(group, groupId) in items" :key="'group_' + groupId" :label="group.label || 'Untitled'" @create="createTask()">
+          <draggable class="kanban-board__drop-area" group="{name: 'tasks_' + groupId, put: true}" v-model="items[groupId].tasks" @end="() => {}">
+            <kanban-item v-for="(card, cardId) in group.tasks" :key="'card_' + cardId" v-model="card.description" @change="() => {}" @delete="() => {}" />
+          </draggable>
+        </kanban-column>
+      </draggable>
+    </div>
+    <kanban-create></kanban-create>
   </div>
 </template>
 
@@ -14,6 +17,8 @@
 // Components
 import KanbanColumn from './KanbanColumn'
 import KanbanItem from './KanbanItem'
+import KanbanCreate from './KanbanCreate'
+
 import draggable from 'vuedraggable'
 
 export default {
@@ -21,39 +26,56 @@ export default {
     KanbanColumn,
     KanbanItem,
     draggable,
+    KanbanCreate,
   },
+  computed: {
+    items() {
+      const todoTasks = this.$store.state.kanban.tasks.filter(task => task.status === 'todo');
+      const inProgTasks = this.$store.state.kanban.tasks.filter(task => task.status === 'in progress');
+      const doneTasks = this.$store.state.kanban.tasks.filter(task => task.status === 'done');
 
-  data() {
-    return {
-      // Example structure
-      items: [
-        {
-          label: 'Todo',
-          tasks: [
-            {
-              content: 'hello world',
-            },
-          ],
-        },
-        {
-          label: 'In Progress',
-          tasks: [
-            {
-              content: 'what',
-            },
-          ],
-        },
-        {
-          label: 'Done',
-          tasks: [
-            {
-              content: 'what',
-            },
-          ],
-        },
-      ],
+
+      return [{label: 'Todo', tasks: todoTasks}, {label: 'In Progress', tasks: inProgTasks}, {label: 'Done', tasks: doneTasks}]
+      // return Object.values(this.$store.state.kanban.tasks);
     }
   },
+  data() {
+
+    return {
+      showCreateSection: false,
+      // Example structure
+      // items: [
+      //   {
+      //     label: 'Todo',
+      //     tasks: [
+      //       {
+      //         content: 'hello world',
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     label: 'In Progress',
+      //     tasks: [
+      //       {
+      //         content: 'what',
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     label: 'Done',
+      //     tasks: [
+      //       {
+      //         content: 'what',
+      //       },
+      //     ],
+      //   },
+      // ],
+    }
+  },
+  methods: {
+    createTask() {
+    },
+  }
 }
 </script>
 

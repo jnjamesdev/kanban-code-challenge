@@ -20,4 +20,6 @@ use App\Http\Controllers\GroupController;
 Route::post('/store', [TasksController::class, 'store']);
 Route::put('/update/{id}', [TasksController::class, 'update']);
 Route::delete('/delete/{id}', [TasksController::class, 'delete']);
+Route::get('/index', [TasksController::class, 'index']);
+
 
