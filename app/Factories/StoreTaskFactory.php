@@ -13,11 +13,19 @@ class StoreTaskFactory
      * @param Request $request
      * @return TaskDto
      */
-    public function fromRequest(Request $request): TaskDto
+    public function fromRequest(Request $request = null, int $id = null): TaskDto
     {
         $dto = new TaskDto();
-        $dto->setDescription($request->description);
-        $dto->setStatus($request->status);
+
+        if ($id) {
+            $dto->setId($id);
+        }
+
+        if ($request) {
+            $dto->setDescription($request->description);
+            $dto->setStatus($request->status);
+        }
+
         return $dto;
     }
 }

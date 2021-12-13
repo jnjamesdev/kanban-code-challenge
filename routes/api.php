@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TasksController;
 use App\Http\Controllers\GroupController;
 
 /*
@@ -16,6 +16,8 @@ use App\Http\Controllers\GroupController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+Route::post('/store', [TasksController::class, 'store']);
+Route::put('/update/{id}', [TasksController::class, 'update']);
+Route::delete('/delete/{id}', [TasksController::class, 'delete']);
+
