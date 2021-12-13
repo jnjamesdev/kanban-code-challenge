@@ -6,10 +6,6 @@
 
 <script>
 export default {
-  mounted() {
-    // this.$store.dispatch("getTasks");
-    this.$store.dispatch('getTasks', null, {root:true})
-  }
 
 }
 </script>

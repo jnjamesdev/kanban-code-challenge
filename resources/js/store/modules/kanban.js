@@ -24,6 +24,12 @@ const actions = {
       .then(response => {
         commit('SET_TASKS', response.data)
       })
+  },
+  deleteTask({ commit }, id) {
+    axios.delete('/api/delete/' + id)
+      .then(response => {
+        location.reload();
+      })
   }
 }
 

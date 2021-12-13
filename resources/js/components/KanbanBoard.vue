@@ -4,7 +4,7 @@
       <draggable class="kanban-board" group="groups" v-model="items" @end="() => {}">
         <kanban-column v-for="(group, groupId) in items" :key="'group_' + groupId" :label="group.label || 'Untitled'" @create="createTask()">
           <draggable class="kanban-board__drop-area" group="{name: 'tasks_' + groupId, put: true}" v-model="items[groupId].tasks" @end="() => {}">
-            <kanban-item v-for="(card, cardId) in group.tasks" :key="'card_' + cardId" v-model="card.description" @change="() => {}" @delete="() => {}" />
+            <kanban-item v-for="(card, cardId) in group.tasks" :key="'card_' + cardId" v-model="card.description" @change="() => {}" @delete="deleteTask(card.id)" />
           </draggable>
         </kanban-column>
       </draggable>
@@ -28,15 +28,16 @@ export default {
     draggable,
     KanbanCreate,
   },
+  mounted() {
+    this.$store.dispatch('getTasks', null, {root:true})
+  },
   computed: {
     items() {
       const todoTasks = this.$store.state.kanban.tasks.filter(task => task.status === 'todo');
       const inProgTasks = this.$store.state.kanban.tasks.filter(task => task.status === 'in progress');
       const doneTasks = this.$store.state.kanban.tasks.filter(task => task.status === 'done');
 
-
       return [{label: 'Todo', tasks: todoTasks}, {label: 'In Progress', tasks: inProgTasks}, {label: 'Done', tasks: doneTasks}]
-      // return Object.values(this.$store.state.kanban.tasks);
     }
   },
   data() {
@@ -74,6 +75,10 @@ export default {
   },
   methods: {
     createTask() {
+    },
+    deleteTask(id) {
+      const items = this.items;
+      this.$store.dispatch('deleteTask' , id)
     },
   }
 }
