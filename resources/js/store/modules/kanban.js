@@ -25,6 +25,12 @@ const actions = {
         commit('SET_TASKS', response.data)
       })
   },
+  updateTask({ commit }, data) {
+    axios.put('/api/update/' + data.id, { status: data.status, description: data.description })
+      .then(response => {
+        location.reload();
+      })
+  },
   deleteTask({ commit }, id) {
     axios.delete('/api/delete/' + id)
       .then(response => {

@@ -43,10 +43,10 @@ class TaskDto
     /**
      * Set Description
      *
-     * @param string $description
+     * @param null|string $description
      * @return TaskDto
      */
-    public function setDescription(string $description): TaskDto
+    public function setDescription(?string $description): TaskDto
     {
         $this->description = $description;
         return $this;
@@ -65,10 +65,10 @@ class TaskDto
     /**
      * Set Status
      *
-     * @param string $status
+     * @param null|string $status
      * @return TaskDto
      */
-    public function setStatus(string $status): TaskDto
+    public function setStatus(?string $status): TaskDto
     {
         $this->status = $status;
         return $this;

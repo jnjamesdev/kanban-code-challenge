@@ -67,6 +67,7 @@ class TasksController extends Controller
             $this->updateTaskUseCase->handle($dto);
             return response()->json(200);
         } catch (\Exception $e) {
+            logger($e);
             return response()->json(500);
         }
     }

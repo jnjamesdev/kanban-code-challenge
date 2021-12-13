@@ -31,8 +31,15 @@ class TaskRepository
     public function update(TaskDto $dto): void
     {
         $task = $this->getById($dto->getId());
-        $task->status = $dto->getStatus();
-        $task->description = $dto->getDescription();
+
+        if ($dto->getStatus() !== null) {
+            $task->status = $dto->getStatus();
+        }
+
+        if ($dto->getDescription() !== null) {
+            $task->description = $dto->getDescription();
+        }
+
         $task->save();
     }
 
@@ -56,7 +63,7 @@ class TaskRepository
      */
     public function getById(int $id): Task
     {
-        return Task::findOrFail($id);
+        return Task::find($id);
     }
 
     /**

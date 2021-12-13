@@ -1,10 +1,10 @@
 <template>
   <div>
     <div v-if="items">
-      <draggable class="kanban-board" group="groups" v-model="items" @end="() => {}">
+      <draggable class="kanban-board" group="groups" v-model="items">
         <kanban-column v-for="(group, groupId) in items" :key="'group_' + groupId" :label="group.label || 'Untitled'" @create="createTask()">
-          <draggable class="kanban-board__drop-area" group="{name: 'tasks_' + groupId, put: true}" v-model="items[groupId].tasks" @end="() => {}">
-            <kanban-item v-for="(card, cardId) in group.tasks" :key="'card_' + cardId" v-model="card.description" @change="() => {}" @delete="deleteTask(card.id)" />
+          <draggable class="kanban-board__drop-area" group="{name: 'tasks_' + groupId, put: true}" v-model="items[groupId].tasks"  @change="updateStatus($event, groupId)">
+            <kanban-item v-for="(card, cardId) in group.tasks" :key="'card_' + cardId" v-model="card.description" @change="changeDescription($event, card)" @delete="deleteTask(card.id)" />
           </draggable>
         </kanban-column>
       </draggable>
@@ -44,42 +44,35 @@ export default {
 
     return {
       showCreateSection: false,
-      // Example structure
-      // items: [
-      //   {
-      //     label: 'Todo',
-      //     tasks: [
-      //       {
-      //         content: 'hello world',
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     label: 'In Progress',
-      //     tasks: [
-      //       {
-      //         content: 'what',
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     label: 'Done',
-      //     tasks: [
-      //       {
-      //         content: 'what',
-      //       },
-      //     ],
-      //   },
-      // ],
     }
   },
   methods: {
     createTask() {
     },
     deleteTask(id) {
-      const items = this.items;
       this.$store.dispatch('deleteTask' , id)
     },
+    updateStatus(evnt, groupId) {
+      if (evnt.added) {
+        const taskId = evnt.added.element.id
+        let status = '';
+        switch(groupId) {
+          case 0:
+            status = 'todo';
+            break;
+          case 1:
+            status = 'in progress';
+            break;
+          case 2:
+            status = 'done'
+            break
+        }
+        this.$store.dispatch('updateTask', {status: status, id: taskId}, {root:true})
+      }
+    },
+    changeDescription(event, card) {
+      this.$store.dispatch('updateTask', {description: event, id: card.id}, {root:true})
+    }
   }
 }
 </script>
