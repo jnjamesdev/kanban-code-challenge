@@ -60,7 +60,7 @@ class TasksTest extends TestCase
      */
     public function testCanCreateTaskTest()
     {
-        $data =  ['status' => 'done', 'description' => 'test desc'];
+        $data =  ['status' => 'done', 'description' => 'test desc', 'order' => 1];
         $response = $this->post('api/store', $data);
         $this->assertDatabaseHas('tasks', $data);
     }

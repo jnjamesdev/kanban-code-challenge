@@ -54,6 +54,7 @@ export default {
       debugger;
     },
     createTask(data) {
+      data.order = 1;
       this.$store.dispatch('createTask' , data)
 
     },

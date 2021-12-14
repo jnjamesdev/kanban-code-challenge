@@ -49,6 +49,7 @@ class TasksController extends Controller
             $this->storeTaskUseCase->handle($dto);
             return response()->json(200);
         } catch (\Exception $e) {
+            dd($e);
             return response()->json(500);
         }
     }

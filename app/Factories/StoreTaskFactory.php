@@ -25,7 +25,6 @@ class StoreTaskFactory
             $dto->setDescription($request->description);
             $dto->setStatus($request->status);
             $dto->setOrder((int) $request->order ?? null);
-
         }
 
         return $dto;

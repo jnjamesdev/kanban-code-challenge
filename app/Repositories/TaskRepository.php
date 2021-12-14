@@ -19,6 +19,7 @@ class TaskRepository
         $task = new Task();
         $task->description = $dto->getDescription();
         $task->status = $dto->getStatus();
+        $task->order = $dto->getOrder();
         $task->save();
     }
 
