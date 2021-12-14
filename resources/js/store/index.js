@@ -11,6 +11,5 @@ export default new Vuex.Store({
   modules: {
     kanban,
   },
-  strict: true,
   devtools: debug,
 })

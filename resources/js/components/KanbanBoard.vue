@@ -2,14 +2,13 @@
   <div>
     <div v-if="items">
       <draggable class="kanban-board" group="groups" v-model="items">
-        <kanban-column v-for="(group, groupId) in items" :key="'group_' + groupId" :label="group.label || 'Untitled'" @create="createTask()">
+        <kanban-column v-for="(group, groupId) in items" :key="'group_' + groupId" :label="group.label || 'Untitled'" @create="createTask($event)">
           <draggable class="kanban-board__drop-area" group="{name: 'tasks_' + groupId, put: true}" v-model="items[groupId].tasks"  @change="updateStatus($event, groupId)">
             <kanban-item v-for="(card, cardId) in group.tasks" :key="'card_' + cardId" v-model="card.description" @change="changeDescription($event, card)" @delete="deleteTask(card.id)" />
           </draggable>
         </kanban-column>
       </draggable>
     </div>
-    <kanban-create></kanban-create>
   </div>
 </template>
 
@@ -17,7 +16,6 @@
 // Components
 import KanbanColumn from './KanbanColumn'
 import KanbanItem from './KanbanItem'
-import KanbanCreate from './KanbanCreate'
 
 import draggable from 'vuedraggable'
 
@@ -26,7 +24,6 @@ export default {
     KanbanColumn,
     KanbanItem,
     draggable,
-    KanbanCreate,
   },
   mounted() {
     this.$store.dispatch('getTasks', null, {root:true})
@@ -47,7 +44,9 @@ export default {
     }
   },
   methods: {
-    createTask() {
+    createTask(data) {
+      this.$store.dispatch('createTask' , data)
+
     },
     deleteTask(id) {
       this.$store.dispatch('deleteTask' , id)
