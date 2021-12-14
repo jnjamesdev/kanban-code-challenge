@@ -30,7 +30,11 @@ const actions = {
       commit('UPDATE_TASK', data)
     }
 
-    axios.put('/api/update/' + data.id, { status: data.status, description: data.description })
+    if (data.index !== undefined) {
+      commit('UPDATE_TASK_INDEX', data)
+    }
+
+    axios.put('/api/update/' + data.id, { status: data.status, description: data.description, order: data.index })
       .then(response => {
       })
   },
@@ -57,6 +61,10 @@ const mutations = {
   },
   UPDATE_TASK(state, data) {
     data.card.status = data.status
+  },
+  UPDATE_TASK_INDEX(state, data) {
+    let task = state.tasks.find(task => task.id === data.card.id);
+    task.order = data.index;
   },
 
 }

@@ -19,8 +19,6 @@ class UpdateTaskUseCase
 
     public function handle(TaskDTO $taskDto)
     {
-        logger('jon test');
-        logger($taskDto->getId());
         $this->taskRepo->update($taskDto);
     }
 }

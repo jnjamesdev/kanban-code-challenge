@@ -40,6 +40,10 @@ class TaskRepository
             $task->description = $dto->getDescription();
         }
 
+        if ($dto->getOrder() !== null) {
+            $task->order = $dto->getOrder();
+        }
+
         $task->save();
     }
 

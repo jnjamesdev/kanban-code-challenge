@@ -1,10 +1,10 @@
 <template>
   <div>
     <div v-if="items">
-      <draggable class="kanban-board" group="groups" v-model="items">
+      <draggable class="kanban-board" group="groups" v-model="items" @change="test()">
         <kanban-column v-for="(group, groupId) in items" :key="'group_' + groupId" :label="group.label || 'Untitled'" @create="createTask($event)">
           <draggable class="kanban-board__drop-area" group="{name: 'tasks_' + groupId, put: true}" v-model="items[groupId].tasks"  @change="updateStatus($event, groupId)">
-            <kanban-item v-for="(card, cardId) in group.tasks" :key="'card_' + cardId" v-model="card.description" @change="changeDescription($event, card)" @delete="deleteTask(card.id)" />
+            <kanban-item v-for="(card, cardId) in group.tasks" :key="'card_' + card.order" v-model="card.description" @change="changeDescription($event, card)" @delete="deleteTask(card.id)" />
           </draggable>
         </kanban-column>
       </draggable>
@@ -20,6 +20,7 @@ import KanbanItem from './KanbanItem'
 import draggable from 'vuedraggable'
 
 export default {
+  order: 1,
   components: {
     KanbanColumn,
     KanbanItem,
@@ -30,9 +31,14 @@ export default {
   },
   computed: {
     items() {
-      const todoTasks = this.$store.state.kanban.tasks.filter(task => task.status === 'todo');
-      const inProgTasks = this.$store.state.kanban.tasks.filter(task => task.status === 'in progress');
-      const doneTasks = this.$store.state.kanban.tasks.filter(task => task.status === 'done');
+      let todoTasks = this.$store.state.kanban.tasks.filter(task => task.status === 'todo');
+      todoTasks = todoTasks.sort((a, b) => a.order > b.order ? 1 : -1);
+      let inProgTasks = this.$store.state.kanban.tasks.filter(task => task.status === 'in progress');
+      inProgTasks = inProgTasks.sort((a, b) => a.order > b.order ? 1 : -1);
+
+      let doneTasks = this.$store.state.kanban.tasks.filter(task => task.status === 'done');
+      doneTasks = doneTasks.sort((a, b) => a.order > b.order ? 1 : -1);
+
 
       return [{label: 'Todo', tasks: todoTasks}, {label: 'In Progress', tasks: inProgTasks}, {label: 'Done', tasks: doneTasks}]
     }
@@ -44,6 +50,9 @@ export default {
     }
   },
   methods: {
+    test() {
+      debugger;
+    },
     createTask(data) {
       this.$store.dispatch('createTask' , data)
 
@@ -52,9 +61,19 @@ export default {
       this.$store.dispatch('deleteTask' , id)
     },
     updateStatus(evnt, groupId) {
+      debugger;
+      let newIndex;
+      let taskId
+      let status = '';
+
+      if (evnt.moved) {
+        taskId = evnt.moved.element.id
+        newIndex = evnt.moved.newIndex;
+        this.$store.dispatch('updateTask', {status: status, id: taskId, card: evnt.moved.element, index: newIndex}, {root:true})
+
+      }
       if (evnt.added) {
-        const taskId = evnt.added.element.id
-        let status = '';
+        taskId = evnt.added.element.id
         switch(groupId) {
           case 0:
             status = 'todo';
@@ -66,7 +85,7 @@ export default {
             status = 'done'
             break
         }
-        this.$store.dispatch('updateTask', {status: status, id: taskId, card: evnt.added.element}, {root:true})
+        this.$store.dispatch('updateTask', {status: status, id: taskId, card: evnt.added.element, index: newIndex}, {root:true})
       }
     },
     changeDescription(event, card) {

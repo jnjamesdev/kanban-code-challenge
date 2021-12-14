@@ -7,6 +7,8 @@ class TaskDto
     private ?int $id;
     private ?string $description;
     private ?string $status;
+    private ?int $order;
+
 
     /**
      *  Get ID
@@ -71,6 +73,28 @@ class TaskDto
     public function setStatus(?string $status): TaskDto
     {
         $this->status = $status;
+        return $this;
+    }
+
+    /**
+     *  Get order
+     *
+     * @return null|int
+     */
+    public function getOrder(): ?int
+    {
+        return $this->order;
+    }
+
+    /**
+     * Set Order
+     *
+     * @param null|int $order
+     * @return TaskDto
+     */
+    public function setOrder(?int $order): TaskDto
+    {
+        $this->order = $order;
         return $this;
     }
 }
