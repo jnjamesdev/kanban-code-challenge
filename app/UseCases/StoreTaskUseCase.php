@@ -19,7 +19,6 @@ class StoreTaskUseCase
 
     public function handle(TaskDTO $taskDto)
     {
-        logger('333333');
         $this->taskRepo->store($taskDto);
     }
 }

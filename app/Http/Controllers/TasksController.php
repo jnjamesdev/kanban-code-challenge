@@ -49,7 +49,6 @@ class TasksController extends Controller
             $this->storeTaskUseCase->handle($dto);
             return response()->json(200);
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(500);
         }
     }
@@ -68,7 +67,6 @@ class TasksController extends Controller
             $this->updateTaskUseCase->handle($dto);
             return response()->json(200);
         } catch (\Exception $e) {
-            logger($e);
             return response()->json(500);
         }
     }
@@ -97,11 +95,11 @@ class TasksController extends Controller
      */
     public function index(): JsonResponse
     {
-        // try {
+        try {
             $tasks = $this->getTasksUseCase->handle();
             return response()->json($tasks);
-        // } catch (\Exception $e) {
-        //     // return response()->json(500);
-        // }
+        } catch (\Exception $e) {
+            return response()->json(500);
+        }
     }
 }
