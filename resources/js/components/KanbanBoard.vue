@@ -63,17 +63,25 @@ export default {
     updateStatus(evnt, groupId) {
       debugger;
       let newIndex;
+      let oldIndex;
       let taskId
       let status = '';
+      if (event.removed) {
+        oldIndex = evnt.removed.oldIndex;
+
+      }
 
       if (evnt.moved) {
         taskId = evnt.moved.element.id
         newIndex = evnt.moved.newIndex;
-        this.$store.dispatch('updateTask', {status: status, id: taskId, card: evnt.moved.element, index: newIndex}, {root:true})
-
+        oldIndex = evnt.moved.oldIndex;
+        this.$store.dispatch('updateTask', {status: status, id: taskId, card: evnt.moved.element, newIndex: newIndex, oldIndex: oldIndex}, {root:true})
       }
       if (evnt.added) {
         taskId = evnt.added.element.id
+        newIndex = evnt.added.newIndex;
+
+
         switch(groupId) {
           case 0:
             status = 'todo';
@@ -85,7 +93,7 @@ export default {
             status = 'done'
             break
         }
-        this.$store.dispatch('updateTask', {status: status, id: taskId, card: evnt.added.element, index: newIndex}, {root:true})
+        this.$store.dispatch('updateTask', {status: status, id: taskId, card: evnt.added.element, index: newIndex, oldIndex: oldIndex}, {root:true})
       }
     },
     changeDescription(event, card) {

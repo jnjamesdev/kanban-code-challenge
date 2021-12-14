@@ -29,12 +29,12 @@ const actions = {
     if (data.status) {
       commit('UPDATE_TASK', data)
     }
-
-    if (data.index !== undefined) {
+    debugger;
+    if (data.newIndex !== undefined) {
       commit('UPDATE_TASK_INDEX', data)
     }
 
-    axios.put('/api/update/' + data.id, { status: data.status, description: data.description, order: data.index })
+    axios.put('/api/update/' + data.id, { status: data.status, description: data.description, order: data.newIndex })
       .then(response => {
       })
   },
@@ -63,10 +63,22 @@ const mutations = {
     data.card.status = data.status
   },
   UPDATE_TASK_INDEX(state, data) {
-    let task = state.tasks.find(task => task.id === data.card.id);
-    task.order = data.index;
-  },
+    debugger;
 
+    data.card.order = data.newIndex;
+
+    state.tasks = state.tasks.map(
+      (task) => {
+        if (task.order > data.newIndex) {
+          task.order = task.order + 1;
+        }
+        return task;
+      }
+
+    )
+
+
+  },
 }
 
 export default {
