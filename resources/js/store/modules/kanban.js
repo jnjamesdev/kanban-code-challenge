@@ -29,7 +29,6 @@ const actions = {
     if (data.status) {
       commit('UPDATE_TASK', data)
     }
-    debugger;
     if (data.newIndex !== undefined) {
       commit('UPDATE_TASK_INDEX', data)
     }
@@ -63,7 +62,6 @@ const mutations = {
     data.card.status = data.status
   },
   UPDATE_TASK_INDEX(state, data) {
-    debugger;
 
     data.card.order = data.newIndex;
 

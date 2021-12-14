@@ -62,7 +62,6 @@ export default {
       this.$store.dispatch('deleteTask' , id)
     },
     updateStatus(evnt, groupId) {
-      debugger;
       let newIndex;
       let oldIndex;
       let taskId
